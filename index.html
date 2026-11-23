@@ -51,8 +51,9 @@ h2.sec::before,h2.sec::after,.blk h2::before,.blk h2::after{content:"";flex:1;he
 .cat img{width:104px;height:104px;border-radius:50%;object-fit:cover;background:var(--petal);box-shadow:0 0 0 3px var(--cream),0 0 0 4.5px var(--gold)}
 .cat span{display:block;margin-top:10px;font-weight:700;font-size:15px}
 .ph{width:104px;height:104px;border-radius:50%;background:var(--petal);display:flex;align-items:center;justify-content:center;color:var(--green);box-shadow:0 0 0 3px var(--cream),0 0 0 4.5px var(--gold)}
-.card{scroll-margin-top:12px}.card:target{box-shadow:0 0 0 3px var(--gold),0 2px 12px rgba(62,48,37,.08)}.card figcaption small{color:var(--muted);font-size:12px}.toast{position:fixed;inset-inline:14px;bottom:76px;z-index:6;background:var(--green-d);color:#fff;border-radius:14px;padding:10px 14px;font-size:14px;text-align:center}.toast[hidden]{display:none}
+.card{scroll-margin-top:12px}.card:target{box-shadow:0 0 0 3px var(--gold),0 2px 12px rgba(62,48,37,.08)}.card figcaption small{color:var(--muted);font-size:12px}.toast{position:fixed;inset-inline:14px;bottom:76px;z-index:30;background:var(--green-d);color:#fff;border-radius:14px;padding:10px 14px;font-size:14px;text-align:center}.toast[hidden]{display:none}
 .more{text-align:center;margin-top:18px}.more[hidden]{display:none}
+.lb{position:fixed;inset:0;z-index:20;background:rgba(30,22,16,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px}.lb[hidden]{display:none}.lb img{max-width:100%;max-height:70vh;border-radius:14px;object-fit:contain}.lb .cap{color:#fff;font-size:14px;text-align:center}.lb .x{position:absolute;top:calc(10px + env(safe-area-inset-top,0px));inset-inline-start:14px;background:rgba(255,255,255,.18);color:#fff;border:0;border-radius:50%;width:42px;height:42px;font-size:26px;line-height:1;cursor:pointer}.card img{cursor:zoom-in}
 .empty{text-align:center;color:var(--muted);padding:24px 0}
 .tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 0 18px}
 .tabs button{font:inherit;font-size:15px;border:0;padding:6px 18px;border-radius:999px;background:var(--petal);color:var(--ink);cursor:pointer}
@@ -163,6 +164,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding:30px 0 10px}
 <footer>Rovena · Flowers &amp; Gifts</footer>
 </main>
 <nav class="bar" aria-label="سفارش سریع"><a class="btn" href="https://t.me/Rovena_flower" target="_blank" rel="noopener">سفارش در تلگرام</a><a class="btn alt" href="https://www.instagram.com/rovena.flower" target="_blank" rel="noopener">اینستاگرام</a></nav>
+<div id="lb" class="lb" hidden role="dialog" aria-modal="true" aria-label="نمایش بزرگ عکس"><button type="button" class="x" aria-label="بستن">×</button><img alt=""><div class="cap"></div><a class="btn" target="_blank" rel="noopener">سفارش این مدل</a></div>
 <div id="toast" class="toast" hidden>متن سفارش کپی شد. اگر در تلگرام خالی بود، آن را Paste کنید و بفرستید.</div>
 <script>
 (function(){
@@ -176,6 +178,13 @@ tb.forEach(function(b){b.addEventListener("click",function(){setCat(b.dataset.c)
 document.querySelectorAll(".cat").forEach(function(b){b.addEventListener("click",function(){setCat(b.dataset.cat);document.getElementById("gallery").scrollIntoView({behavior:"smooth"})})});
 document.querySelectorAll("img[data-ref]").forEach(function(i){var r=document.querySelector('.card img[alt="'+i.dataset.ref+'"]');if(r)i.src=r.src});
 document.querySelectorAll(".mini").forEach(function(a){a.addEventListener("click",function(){var t="";try{t=decodeURIComponent(a.href.split("?text=")[1]||"")}catch(e){}try{navigator.clipboard.writeText(t)}catch(e){}var m=document.getElementById("toast");m.hidden=false;clearTimeout(window._tt);window._tt=setTimeout(function(){m.hidden=true},7000)})});
+var lb=document.getElementById("lb"),li=lb.querySelector("img"),lc=lb.querySelector(".cap"),la=lb.querySelector("a");
+function openLb(f){var im=f.querySelector("img");li.src=im.src;li.alt=im.alt;lc.textContent=f.querySelector("figcaption").textContent.replace(/\s+/g," ");la.href=f.querySelector(".mini").href;lb.hidden=false;document.body.style.overflow="hidden"}
+function closeLb(){lb.hidden=true;document.body.style.overflow=""}
+cd.forEach(function(f){f.querySelector("img").addEventListener("click",function(){openLb(f)})});
+lb.addEventListener("click",function(e){if(e.target===lb||e.target.className==="x")closeLb()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeLb()});
+la.addEventListener("click",function(){var t="";try{t=decodeURIComponent(la.href.split("?text=")[1]||"")}catch(e){}try{navigator.clipboard.writeText(t)}catch(e){}var m=document.getElementById("toast");m.hidden=false;clearTimeout(window._tt);window._tt=setTimeout(function(){m.hidden=true},7000)});
 show();fromHash();window.addEventListener("hashchange",fromHash);
 })();
 </script>
